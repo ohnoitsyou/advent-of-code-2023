@@ -1,17 +1,23 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    val digitRegex = Regex("[0-9]")
+    val words = listOf("one" to 1, "two" to 2, "three" to 3, "four" to 4, "five" to 5, "six" to 6, "seven" to 7, "eight" to 8, "nine" to 9)
+    val lookaheadRegex = """(?=(${words.joinToString("|") { it.first } + "|[0-9]"}))""".toRegex()
+
+    fun partOne(lines: List<String>): Int = lines.sumOf { line ->
+        digitRegex.findAll(line).let { matches ->
+            "${matches.first().value}${matches.last().value}".toInt()
+        }
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun partTwo(lines: List<String>): Int = lines.sumOf { line ->
+        lookaheadRegex.findAll(line).let { matches ->
+            listOf(matches.first().groupValues[1], matches.last().groupValues[1]).map { value ->
+                words.first { word -> word.first == value || "${word.second}" == value }.second
+            }
+        }.joinToString("").toInt()
     }
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    val input = readInputResource(false, "one.txt")
+    partOne(input).println()
+    partTwo(input).println()
 }
