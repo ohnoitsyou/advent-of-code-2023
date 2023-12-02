@@ -18,6 +18,7 @@ fun main() {
     }
 
     val input = readInputResource(false, "one.txt")
-    partOne(input).println()
-    partTwo(input).println()
+    println("AoC 2023 - Day 01:")
+    "Part One: ${partOne(input)}".println()
+    "Part Two: ${partTwo(input)}".println()
 }
